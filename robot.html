@@ -34,17 +34,20 @@
         "AlertStatus"   : 0,
         "PictureNumber" : 0,        
         "MotorState"    : 0, 
-        "Direction"     : 120,  
+        "Direction"     : 120,
+        "ObstacleStatus": 0,  
         "Distance"      : 0,   
         "Temperature"   : 0,
         "Brightness"    : 0,
         "Noise"         : 0
     };
     
-    function displayStatus(motorState, distance, alertStatus)
+    function displayStatus(motorState, obstacleStatus, distance, alertStatus)
     {
-        var AlertList = ["No alert", "Alert Motion", "Alert Lux", "Alert Temperature", "Alert Noise"];
-
+        var AlertList     = ["No alert", "Alert Motion", "Alert Lux", "Alert Temperature", "Alert Noise"];
+        var ObstacleList  = ["Obstacle ", "Obstacle Left ", "Obstacle Right "]; 
+        var ObstacleList2 = ["No Obstacle", "Left OK", "Right OK"];         
+     
         if (motorState == 1) {
            $('#MotorStatusText').text('Motors started'); 
            $("#MotorStatusId").removeClass('alert alert-danger');         
@@ -57,15 +60,14 @@
            $("#MotorStatusId").addClass('alert alert-danger');
         }
          
-        if (distance > 0) {
-            $('#DistanceText').text('0bstacle: ' + distance + 'cm'); 
+        if (distance > 0 || obstacleStatus >= 12) {
+            $('#DistanceText').text(ObstacleList[obstacleStatus-12] + distance + 'cm'); 
             $("#DistanceId").removeClass('alert alert-info');
-            $("#DistanceId").addClass('alert alert-warning');
-            
+            $("#DistanceId").addClass('alert alert-warning');         
         }
         else
         {
-            $('#DistanceText').text('No obstacle'); 
+            $('#DistanceText').text(ObstacleList2[obstacleStatus]); 
             $("#DistanceId").removeClass('alert alert-warning');        
             $("#DistanceId").addClass('alert alert-info');
         }       
@@ -73,8 +75,7 @@
         $('#AlertStatusText').text(AlertList[alertStatus]); 
         if (alertStatus > 0) {
            $("#AlertStatusId").removeClass('alert alert-info');
-           $("#AlertStatusId").addClass('alert alert-danger');
-            
+           $("#AlertStatusId").addClass('alert alert-danger');          
         }
         else
         {
@@ -91,7 +92,7 @@
 
        drawCompass(infos.Direction);
        drawChart();
-       displayStatus(infos.MotorState, infos.Distance, infos.AlertStatus);   
+       displayStatus(infos.MotorState, infos.ObstacleStatus, infos.Distance, infos.AlertStatus);   
        document.getElementById("PictureNumber").innerHTML = infos.PictureNumber;    
        document.getElementById("div_infos").innerHTML = 'Alert status:' + infos.AlertStatus + ' - Picture number: ' + infos.PictureNumber + ' - MotorState: ' + infos.MotorState + ' - Direction:' + infos.Direction + ' - Distance:' + infos.Distance + ' - Temperature:' + infos.Temperature + ' - Brightness:' + infos.Brightness  + ' - Noise:' + infos.Noise;
     } // end function displayinfo
@@ -215,6 +216,7 @@
                        console.log("PictureNumber: " + infos.PictureNumber);                       
                        console.log("MotorState: " + infos.MotorState);
                        console.log("Direction: " + infos.Direction);
+                       console.log("ObstacleStatus: " + infos.ObstacleStatus);
                        console.log("Distance: " + infos.Distance);
                        console.log("Temperature: " + infos.Temperature);
                        console.log("Brightness: " + infos.Brightness);
@@ -232,12 +234,12 @@
                                    break;
                              case 4: //check around
                                    var tmptxt='?';
-                                   if      (infos.result == 1) tmptxt = 'Left OK';
-                                   else if (infos.result == 2) tmptxt = 'Right OK';
-                                   else if (infos.result == 13) tmptxt = 'Obstacle Left';
-                                   else if (infos.result == 14) tmptxt = 'Obstacle Right';
-                                   else if (infos.result == 12) tmptxt = 'Obstacle';
-                                   else                        tmptxt = '?';
+                                   if      (infos.ObstacleStatus == 1)  tmptxt = 'Left OK';
+                                   else if (infos.ObstacleStatus == 2)  tmptxt = 'Right OK';
+                                   else if (infos.ObstacleStatus == 13) tmptxt = 'Obstacle Left';
+                                   else if (infos.ObstacleStatus == 14) tmptxt = 'Obstacle Right';
+                                   else if (infos.ObstacleStatus == 12) tmptxt = 'Obstacle';
+                                   else                                 tmptxt = '?';
                                    document.getElementById("CheckAroundResult").innerHTML = '<b>' + tmptxt + '</b>';
                                    break;
                              
@@ -529,14 +531,12 @@
            $('#VerticalValueId').slider({
                formatter: function(value) {
                   return 'Current value: '+value;
-                },
-                reversed: true
+                }
            });
            $('#HorizontalValueId').slider({
                formatter: function(value) {
                   return 'Current value: '+value;
-                },
-                reversed: false
+                }
            });                
           </script>            
          </div>
