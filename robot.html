@@ -94,7 +94,7 @@
        drawChart();
        displayStatus(infos.MotorState, infos.ObstacleStatus, infos.Distance, infos.AlertStatus);   
        document.getElementById("PictureNumber").innerHTML = infos.PictureNumber;    
-       document.getElementById("div_infos").innerHTML = 'Alert status:' + infos.AlertStatus + ' - Picture number: ' + infos.PictureNumber + ' - MotorState: ' + infos.MotorState + ' - Direction:' + infos.Direction + ' - Distance:' + infos.Distance + ' - Temperature:' + infos.Temperature + ' - Brightness:' + infos.Brightness  + ' - Noise:' + infos.Noise;
+       document.getElementById("div_infos").innerHTML = 'Alert status:' + infos.AlertStatus + ' - Picture number: ' + infos.PictureNumber + ' - MotorState: ' + infos.MotorState + ' - Direction:' + infos.Direction + ' - Obstacle:' + infos.ObstacleStatus + ' - Distance:' + infos.Distance + ' - Temperature:' + infos.Temperature + ' - Brightness:' + infos.Brightness  + ' - Noise:' + infos.Noise;
     } // end function displayinfo
           
     function HandleCommand()
