@@ -38,13 +38,14 @@
         "ObstacleStatus": 0,  
         "Distance"      : 0,   
         "Temperature"   : 0,
+        "Humidity"      : 0,
         "Brightness"    : 0,
         "Noise"         : 0
     };
     
     function displayStatus(motorState, obstacleStatus, distance, alertStatus)
     {
-        var AlertList     = ["No alert", "Alert Motion", "Alert Lux", "Alert Temperature", "Alert Noise"];
+        var AlertList     = ["No alert", "Alert Motion", "Alert Lux", "Alert Temperature", "Alert Humidity", "Alert Noise"];
         var ObstacleList  = ["Obstacle ", "Obstacle Left ", "Obstacle Right "]; 
         var ObstacleList2 = ["No Obstacle", "Left OK", "Right OK"];         
      
@@ -61,7 +62,7 @@
         }
          
         if (distance > 0 || obstacleStatus >= 12) {
-            $('#DistanceText').text(ObstacleList[obstacleStatus-12] + distance + 'cm'); 
+            $('#DistanceText').text(ObstacleList[obstacleStatus-12] + distance + 'mm'); 
             $("#DistanceId").removeClass('alert alert-info');
             $("#DistanceId").addClass('alert alert-warning');         
         }
@@ -94,7 +95,7 @@
        drawChart();
        displayStatus(infos.MotorState, infos.ObstacleStatus, infos.Distance, infos.AlertStatus);   
        document.getElementById("PictureNumber").innerHTML = infos.PictureNumber;    
-       document.getElementById("div_infos").innerHTML = 'Alert status:' + infos.AlertStatus + ' - Picture number: ' + infos.PictureNumber + ' - MotorState: ' + infos.MotorState + ' - Direction:' + infos.Direction + ' - Obstacle:' + infos.ObstacleStatus + ' - Distance:' + infos.Distance + ' - Temperature:' + infos.Temperature + ' - Brightness:' + infos.Brightness  + ' - Noise:' + infos.Noise;
+       document.getElementById("div_infos").innerHTML = 'Alert status:' + infos.AlertStatus + ' - Picture number: ' + infos.PictureNumber + ' - MotorState: ' + infos.MotorState + ' - Direction:' + infos.Direction + ' - Obstacle:' + infos.ObstacleStatus + ' - Distance:' + infos.Distance + ' - Temperature:' + infos.Temperature + ' - Humidity:' + infos.Humidity + ' - Brightness:' + infos.Brightness  + ' - Noise:' + infos.Noise;
     } // end function displayinfo
           
     function HandleCommand()
@@ -219,11 +220,16 @@
                        console.log("ObstacleStatus: " + infos.ObstacleStatus);
                        console.log("Distance: " + infos.Distance);
                        console.log("Temperature: " + infos.Temperature);
+                       console.log("Humidity: " + infos.Humidity);
                        console.log("Brightness: " + infos.Brightness);
                        console.log("Noise: " + infos.Noise);
 
                                     
-                       if (infos.result < 0) alert ("error send command: " + infos.result);
+                       if (infos.result < 0){
+                             alert ("error send command: " + infos.result);
+                             $('#CommandText').text("command KO, try again"); 
+                             lastCmd = -1;
+                       }
                        else
                        {
                              switch (lastCmd)
@@ -236,9 +242,10 @@
                                    var tmptxt='?';
                                    if      (infos.ObstacleStatus == 1)  tmptxt = 'Left OK';
                                    else if (infos.ObstacleStatus == 2)  tmptxt = 'Right OK';
+                                   else if (infos.ObstacleStatus == 12) tmptxt = 'Obstacle';                                    
                                    else if (infos.ObstacleStatus == 13) tmptxt = 'Obstacle Left';
                                    else if (infos.ObstacleStatus == 14) tmptxt = 'Obstacle Right';
-                                   else if (infos.ObstacleStatus == 12) tmptxt = 'Obstacle';
+                                   else if (infos.ObstacleStatus == 15) tmptxt = 'Obstacle Left & Right';
                                    else                                 tmptxt = '?';
                                    document.getElementById("CheckAroundResult").innerHTML = '<b>' + tmptxt + '</b>';
                                    break;
