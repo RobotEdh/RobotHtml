@@ -46,7 +46,7 @@
     function displayStatus(motorState, obstacleStatus, distance, alertStatus)
     {
         var AlertList     = ["No alert", "Alert Motion", "Alert Lux", "Alert Temperature", "Alert Humidity", "Alert Noise"];
-        var ObstacleList  = ["Obstacle ", "Obstacle Left ", "Obstacle Right "]; 
+        var ObstacleList  = ["Obstacle: ", "Obstacle Left: ", "Obstacle Right: ", "Obstacle Left & Right: "]; 
         var ObstacleList2 = ["No Obstacle", "Left OK", "Right OK"];         
      
         if (motorState == 1) {
@@ -190,7 +190,7 @@
          console.log("Test checked");
          if (lastCmd == -1) {
             lastCmd = 99;
-            SendCommand('CMD=TEST' + '|PARAM=' + '12' + '|>');
+            SendCommand('CMD=TEST' + '|PARAM=' + '0|10|0|321|14|9876|2345|6789|1789|2789' + '|>');
           }
        }                              
  
@@ -261,7 +261,17 @@
                                    break;
                                    
                              case 99: // test
-                                   alert("Test sucessfull");
+                                  if ((infos.AlertStatus==1) && // '0|10|0|321|14|9876|2345|6789|1789|2789' 
+                                      (infos.PictureNumber==11) && 
+                                      (infos.MotorState==1) && 
+                                      (infos.Direction==322) && 
+                                      (infos.ObstacleStatus==15) && 
+                                      (infos.Distance==9877) && 
+                                      (infos.Temperature==2346) && 
+                                      (infos.Humidity==6790) && 
+                                      (infos.Brightness==1790) && 
+                                      (infos.Noise==2790)) alert("Test sucessfull");
+                                   else alert("Bad values received");
                                    break;
                              }
                              $('#CommandText').text("command OK"); 
