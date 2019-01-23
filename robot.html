@@ -34,7 +34,7 @@
         "AlertStatus"   : 0,
         "PictureNumber" : 0,        
         "MotorState"    : 0, 
-        "Direction"     : 120,
+        "Direction"     : 0,
         "ObstacleStatus": 0,  
         "Distance"      : 0,   
         "Temperature"   : 0,
@@ -60,16 +60,16 @@
            $("#MotorStatusId").addClass('alert alert-danger');
         }
          
-        if (distance > 0 || obstacleStatus > 2) {
-            $('#DistanceText').text(ObstacleList[obstacleStatus] + distance + 'mm'); 
-            $("#DistanceId").removeClass('alert alert-info');
-            $("#DistanceId").addClass('alert alert-warning');         
+        if (obstacleStatus > 2) {
+            $('#ObstacleText').text(ObstacleList[obstacleStatus]); 
+            $("#ObstacleId").removeClass('alert alert-info');
+            $("#ObstacleId").addClass('alert alert-warning');         
         }
         else
         {
-            $('#DistanceText').text(ObstacleList[obstacleStatus]); 
-            $("#DistanceId").removeClass('alert alert-warning');        
-            $("#DistanceId").addClass('alert alert-info');
+            $('#ObstacleText').text(ObstacleList[obstacleStatus]); 
+            $("#ObstacleId").removeClass('alert alert-warning');        
+            $("#ObstacleId").addClass('alert alert-info');
         }       
         
         $('#AlertStatusText').text(AlertList[alertStatus]); 
@@ -301,6 +301,10 @@
           ['Label', 'Value'],
           ['Temperature', infos.Temperature/100]
         ]);
+         var Humiditydata = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Humidity', infos.Humidity/100]
+        ]);       
         var Brightnessdata = google.visualization.arrayToDataTable([
           ['Label', 'Value'],
           ['Brightness', infos.Brightness]
@@ -316,13 +320,22 @@
           minorTicks: 5
         };
         chart_Temperature.draw(Temperaturedata, Temperatureoptions);
+        
+        var chart_Humidity = new google.visualization.Gauge(document.getElementById('div_Humidity'));
+        var Humidityoptions = {
+          width: 400, height: 120,
+          min: 0, max: 100,
+          redFrom: 70, redTo: 100,
+          yellowFrom:50, yellowTo: 70,
+          greenFrom:20, greenTo: 50,
+          minorTicks: 5
+        };
+        chart_Humidity.draw(Humiditydata, Humidityoptions);
       
         var chart_Brightness = new google.visualization.Gauge(document.getElementById('div_Brightness'));       
         var Brightnessoptions = {
           width: 400, height: 120,
           min: 0, max: 800,
-          redFrom: 300, redTo: 800,
-          greenFrom:0, greenTo: 300,
           minorTicks: 50
         };
         chart_Brightness.draw(Brightnessdata, Brightnessoptions);
@@ -387,6 +400,9 @@
         <div class="well col-sm-2">
           <div id="div_Temperature" style="width: 120px; height: 120px; float: left;"></div>
         </div>
+         <div class="well col-sm-2">
+          <div id="div_Humidity" style="width: 120px; height: 120px; float: left;"></div>
+        </div>       
         <div class="well col-sm-2">
           <div id="div_Brightness" style="width: 120px; height: 120px; float: left;"></div> 
         </div>               
@@ -399,8 +415,8 @@
         </div> 
        </div> 
        <div class="col-sm-3">
-        <div id ="DistanceId" class="alert alert-info">   
-         <p id="DistanceText">No Obstacle</p>
+        <div id ="ObstacleId" class="alert alert-info">   
+         <p id="ObstacleText">No Obstacle</p>
         </div> 
        </div>
        <div class="col-sm-3">
