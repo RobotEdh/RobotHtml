@@ -43,11 +43,12 @@
         "Noise"         : 0
     };
     
+    var AlertList     = ["No alert", "Alert Motion", "Alert Lux", "Alert Temperature", "Alert Humidity", "Alert Noise"];
+    var MotorList     = ["stopped", "started"];
+    var ObstacleList  = ["No Obstacle", "Left OK", "Right OK", "Obstacle Front", "Obstacle Left", "Obstacle Right", "Obstacle Left & Right"];       
+
     function displayStatus(motorState, obstacleStatus, distance, alertStatus)
-    {
-        var AlertList     = ["No alert", "Alert Motion", "Alert Lux", "Alert Temperature", "Alert Humidity", "Alert Noise"];
-        var ObstacleList  = ["No Obstacle", "Left OK", "Right OK", "Obstacle: ", "Obstacle Left: ", "Obstacle Right: ", "Obstacle Left & Right: "];       
-     
+    {    
         if (motorState == 1) {
            $('#MotorStatusText').text('Motors started'); 
            $("#MotorStatusId").removeClass('alert alert-danger');         
@@ -94,7 +95,7 @@
        drawChart();
        displayStatus(infos.MotorState, infos.ObstacleStatus, infos.Distance, infos.AlertStatus);   
        document.getElementById("PictureNumber").innerHTML = infos.PictureNumber;    
-       document.getElementById("div_infos").innerHTML = 'Alert status:' + infos.AlertStatus + ' - Picture number: ' + infos.PictureNumber + ' - MotorState: ' + infos.MotorState + ' - Direction:' + infos.Direction + ' - Obstacle:' + infos.ObstacleStatus + ' - Distance:' + infos.Distance + ' - Temperature:' + infos.Temperature + ' - Humidity:' + infos.Humidity + ' - Brightness:' + infos.Brightness  + ' - Noise:' + infos.Noise;
+       document.getElementById("div_infos").innerHTML = 'Alert status: ' + AlertList[infos.AlertStatus] + ' - Picture number: ' + infos.PictureNumber + ' - MotorState: ' + MotorList[infos.MotorState] + ' - Direction: ' + infos.Direction + ' - Obstacle: ' + ObstacleList[infos.ObstacleStatus] + ' - Distance: ' + infos.Distance + ' - Temperature: ' + infos.Temperature/100 + ' - Humidity: ' + infos.Humidity/100 + ' - Brightness: ' + infos.Brightness  + ' - Noise: ' + infos.Noise;
     } // end function displayinfo
           
     function HandleCommand()
