@@ -45,7 +45,7 @@
     
     var AlertList     = ["No alert", "Alert Motion", "Alert Lux", "Alert Temperature", "Alert Humidity", "Alert Noise"];
     var MotorList     = ["stopped", "started"];
-    var ObstacleList  = ["No Obstacle", "Left OK", "Right OK", "Obstacle Front", "Obstacle Left", "Obstacle Right", "Obstacle Left & Right"];       
+    var ObstacleList  = ["No Obstacle", "Mid Left OK", "Mid Right OK", "Left OK", "Right OK", "Obstacle Front", "Obstacle Left", "Obstacle Right", "Obstacle Left & Right"];       
 
     function displayStatus(motorState, obstacleStatus, distance, alertStatus)
     {    
@@ -238,14 +238,16 @@
                                    break;
                              case 3: //stop
                                    break;
-                             case 4: //check around
+                             case 4: //check around                      
                                    var tmptxt='?';
-                                   if      (infos.ObstacleStatus == 1) tmptxt = 'Left OK';
-                                   else if (infos.ObstacleStatus == 2) tmptxt = 'Right OK';
-                                   else if (infos.ObstacleStatus == 3) tmptxt = 'Obstacle';                                    
-                                   else if (infos.ObstacleStatus == 4) tmptxt = 'Obstacle Left';
-                                   else if (infos.ObstacleStatus == 5) tmptxt = 'Obstacle Right';
-                                   else if (infos.ObstacleStatus == 6) tmptxt = 'Obstacle Left & Right';
+                                   if      (infos.ObstacleStatus == 1) tmptxt = 'Mid Left OK';
+                                   else if (infos.ObstacleStatus == 2) tmptxt = 'Mid Right OK';
+                                   else if (infos.ObstacleStatus == 3) tmptxt = 'Left OK';
+                                   else if (infos.ObstacleStatus == 4) tmptxt = 'Right OK';                                   
+                                   else if (infos.ObstacleStatus == 5) tmptxt = 'Obstacle';                                    
+                                   else if (infos.ObstacleStatus == 6) tmptxt = 'Obstacle Left';
+                                   else if (infos.ObstacleStatus == 7) tmptxt = 'Obstacle Right';
+                                   else if (infos.ObstacleStatus == 8) tmptxt = 'Obstacle Left & Right';
                                    else                                tmptxt = '?';
                                    document.getElementById("CheckAroundResult").innerHTML = '<b>' + tmptxt + '</b>';
                                    break;
